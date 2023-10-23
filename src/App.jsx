@@ -1,6 +1,6 @@
 import React, { useId, useState } from 'react';
 import uuid from 'react-uuid'
-import ReactFlow, {useNodesState, Background} from 'react-flow-renderer';
+import ReactFlow, {useNodesState, Controls, Background} from 'react-flow-renderer';
 import MyButton from './components/MyButton'
 import 'reactflow/dist/style.css'
 
@@ -32,28 +32,33 @@ function FlowComponent() {
   }
 
   return (
-      <div style={{ width: '100vw', height: '100vh' }}>
-          <MyButton onClick={handleButtonClick} label="Add Node" />
-          
-          
-      {showDialog && (
-        <div style={{border: '1px solid black', padding: '10px', marginTop: '20px'}}>
-          <textarea 
-            placeholder="Enter node data" 
-            value={inputData}
-            onChange={(e) => setInputData(e.target.value)} 
-          />
-          <br />
-          <button onClick={handleButtonSubmit}>Submit</button>
-          <button onClick={() => setShowDialog(false)}>Cancel</button>
-        </div>
-      )}
-
-      <ReactFlow
-        nodes={nodes}
-        onNodesChange={onNodesChange}
+    <div style={{ width: '100vw', height: '100vh' }}>
+      <div style={{position:'absolute', zIndex:10}}>
+        
+        <MyButton  
+        onClick={handleButtonClick} 
+        label="Add Node" 
       />
-    </div>
+      {showDialog && (
+      <div style={{border: '1px solid black', padding: '10px', marginTop: '20px'}}>
+        <textarea 
+          placeholder="Enter node data" 
+          value={inputData}
+          onChange={(e) => setInputData(e.target.value)} 
+        />
+        <br />
+        <button onClick={handleButtonSubmit}>Submit</button>
+        <button onClick={() => setShowDialog(false)}>Cancel</button>
+      </div>
+    )}
+
+      </div>
+
+    <ReactFlow nodes={nodes} onNodesChange={onNodesChange} style={{ width: '100vw', height: '100vh' }}>
+      <Controls />
+      <Background variant="dots" gap={12} size={1} />
+    </ReactFlow>
+  </div>
   )
 }
 
