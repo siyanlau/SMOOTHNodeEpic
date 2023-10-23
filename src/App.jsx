@@ -1,12 +1,13 @@
 import React, { useId, useState } from 'react';
 import uuid from 'react-uuid'
-import ReactFlow, { Background} from 'react-flow-renderer';
+import ReactFlow, {useNodesState, Background} from 'react-flow-renderer';
 import MyButton from './components/MyButton'
+import 'reactflow/dist/style.css'
 
 function FlowComponent() {
   const [showDialog, setShowDialog] = useState(false);
   const [inputData, setInputData] = useState(' ');
-  const [nodes, setNodes] = useState([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
 
   const handleButtonClick = () => {
       setShowDialog(true);
@@ -18,7 +19,8 @@ function FlowComponent() {
       id: uuid(),
       type: 'default',
       data: { label: inputData},
-      position: {x: Math.random()*400, y:Math.random()*400}
+      position: {x: Math.random()*400, y:Math.random()*400},
+      draggable: true
     };
 
     setNodes( (existingNodes) => {
@@ -30,7 +32,7 @@ function FlowComponent() {
   }
 
   return (
-      <div>
+      <div style={{ width: '100vw', height: '100vh' }}>
           <MyButton onClick={handleButtonClick} label="Add Node" />
           
           
@@ -47,19 +49,12 @@ function FlowComponent() {
         </div>
       )}
 
-      {/* {capturedData && (
-        <div style={{border: '1px solid blue', padding: '10px', marginTop: '20px'}}>
-          {capturedData}
-        </div>
-      )} */}
-
-      <ReactFlow nodes={nodes} style={{ width: '100vw', height: '100vh' }}>
-        {console.log(nodes)}
-        {/* <Background /> */}
-      </ReactFlow>
-
-      </div>
-  );
+      <ReactFlow
+        nodes={nodes}
+        onNodesChange={onNodesChange}
+      />
+    </div>
+  )
 }
 
 export default FlowComponent;
